@@ -66,25 +66,35 @@ public class DLL<T> {
     }
     public void removeBetween(T e1, T e2) {
 
-	    boolean f1 = false;
-	    boolean f2 = false;
-	    Node<T> c = head;     /*  يبدأ من الاول*/
-	    Node<T> t = head;     /*  يبدأ من الاخير*/
-	    While( t.next != null ) t = t.next;  
+	if (head == null) return;
 
-	    while( !c.data.equals(e1) && c.next != null ) c = c.next;
-	    if( c.data.equals(e1) ) f1 = true;   /*عشان اتأكد انه لقاه */
-	    
-	    while( !t.data.equals(e2) && t.previous != null ) t = t.previous;
-	    if ( t.data.equals(e2) ) f2 = true;  /*عشان اتأكد انه لقاه */
+        Node<T> current = head;
+        Node<T> start = null;
+        Node<T> end = null;
 
-	    if( f1 && f2 ){
-		while( c.next != t ) {
-		    c = c.next;
-		    c.remove();
-		    }
-	    }   else return;
+        while (current != null) {
+            if (current.data.equals(e1)) {
+                start = current;
+            }
+            if (current.data.equals(e2)) {
+                end = current;
+                break;
+            }
+            current = current.next;
+        }
 
+        if (start == null || end == null || start.next == end) return;
+
+        current = start.next;
+        while (current != end) {
+            Node<T> next = current.next;
+            current = next;
+        }
+
+        start.next = end;
+        end.prev = start;
+
+        head = start;
         // throw new UnsupportedOperationException("Not supported yet.");
         // Write the method removeBetween, member of the class DoubleLinkedList. The method
         // takes two elements e1 and e2, and removes all the elements between the two elements
